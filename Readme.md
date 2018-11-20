@@ -83,7 +83,8 @@ You could imagine a program that creates a pty and limits the  display output to
 ## Specification
 
 - The system will interpret a new DEC Private Mode sequence of 2010.
-- There is no easy way to detect this modes availability.
+- There is no easy way to detect this modes availability. One possibility is
+  to set the COLORTERM=truecolor-alpha.
 - When the mode is set, it will preserve all of the existing terminal state, and create a new overlay with a default alpha of 0.
   - This includes 'normal' or 'alternate screen buffer' modes.
 - When the mode is reset, it will destroy the current overlay and restore the previous terminal state.
@@ -106,6 +107,8 @@ The color values are 0 - 255.
 
 - Some terminal programs **virtualize** the terminal. For example: tmux.
   Those systems should (fill in here - alpha is harder)
+  - If the terminal supports stackable, then it should invoke a display immediately.
+  - If the terminal does not support stackable, then it should only interpret colors with alpha < 255 as alpha = 0.
 - Some terminal display systems that are focused purely on normal mode display
   should just ignore this mode.
 [ansi_up](https://github.com/drudru/ansi_up) for an example.
@@ -116,7 +119,10 @@ in the log.
 ## Best Practices
 <a name='section_Best_Practices'></a>
 
-Any program using this feature will typically need a screen-space rectangle specified.
+Any program using this feature should typically be provided a screen-space rectangle specified to operate in.
+
+If a program relies on a system having fractional alpha support (non 0 and non 255), it should support a mode where it displays with just alpha values of 0 or 255.
+That way the program could run under tmux with support for most of the stackable functionality, yet the actual end-user terminal program does not support alpha channels.
 
 ### Completion
 
