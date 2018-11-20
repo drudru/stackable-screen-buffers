@@ -104,6 +104,8 @@ The color values are 0 - 255.
 - When a terminal foreground color is set to a non 255 alpha, any paints with that foreground should be done after the last background layer was rendered.
 - The terminal should support at least > 1 stackable overlays.
 
+- Some terminal programs **virtualize** the terminal. For example: tmux.
+  Those systems should (fill in here - alpha is harder)
 - Some terminal display systems that are focused purely on normal mode display
   should just ignore this mode.
 [ansi_up](https://github.com/drudru/ansi_up) for an example.
@@ -129,6 +131,8 @@ When it completes, it should pop the stackable mode and emit 'normal' mode outpu
 
 <a name='section_Thoughts'></a>
 ## Thoughts?
+
+How to keep this easy for tmux type systems?
 
 Also, one possible idea is to allow output data to a normal mode display while still leaving the normal mode intact. This would eliminate flicker if switching modes. You could imagine that the display has some parallel job status displaying in the upper screen. At the same time, the system could emit to log messages the normal mode display. These messages would output to the bottom of the display and scroll underneath the stackable buffer. This has problems with multiple stacks, but might be worth it.
 
